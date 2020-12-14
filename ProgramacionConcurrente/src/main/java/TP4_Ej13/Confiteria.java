@@ -16,11 +16,8 @@ public class Confiteria {
     
     private final Semaphore semMozo = new Semaphore(0);     
     private final Semaphore semCocinero = new Semaphore(0);
-    private final Semaphore semEmpleado1 = new Semaphore(0), semEmpleado2 = new Semaphore(0);
-    private final Semaphore mutexConfiteria = new Semaphore(2);
-    private final Semaphore semBebidaInicial = new Semaphore(0);
-    private final Semaphore semBebidaFinal = new Semaphore(0);
-    private boolean hayOtroEmpleado = false; //Para determinar que semEmpleado debe usar;
+    private final Semaphore semEmpleado = new Semaphore(0);
+    private final Semaphore mutexConfiteria = new Semaphore(1);
     
     public void Confiteria(){
     }
@@ -31,21 +28,17 @@ public class Confiteria {
         return mutexConfiteria.tryAcquire();
     }
     
-    public void pedirBebida() throws InterruptedException{
+    public void pedirAtencion() throws InterruptedException{
         semMozo.release();
-        semBebidaInicial.acquire();
+        semEmpleado.acquire();
     }
     
-    public void esperarBebida() throws InterruptedException{
-        semBebidaInicial.acquire();
+    public void realizarPedido(){              
+        semMozo.release();
     }
     
-    public void pedirComida(){              
-        semCocinero.release();
-    }
-    
-    public void esperarComida() throws InterruptedException {
-        //semEmpleado.acquire();                                  
+    public void esperarSentado() throws InterruptedException {
+        semEmpleado.acquire();                                  
     }
     
     public void salirConfiteria(){
@@ -56,7 +49,7 @@ public class Confiteria {
     
     public void esperarEmpleado() throws InterruptedException {
         semMozo.acquire();
-        //semEmpleado.release();
+        semEmpleado.release();
     }
     
     public void esperarDecision() throws InterruptedException {
@@ -72,7 +65,7 @@ public class Confiteria {
     }
     
     public void entregarPedido(){
-        //semEmpleado.release();
+        semEmpleado.release();
     }
     
     //Metodos para el cocinero
