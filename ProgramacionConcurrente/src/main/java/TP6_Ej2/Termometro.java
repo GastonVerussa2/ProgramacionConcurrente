@@ -28,7 +28,7 @@ public class Termometro extends Thread{             //Hilo que sirve para medir 
     }
     
     private int medirTemperatura(){                     //Metodo que simula la medición de la temperatura.
-        return 20000 + (int) (Math.random() * 15000);
+        return 20 + (int) (Math.random() * 15);
     }
     
     public void run(){                                                  //Metodo run.

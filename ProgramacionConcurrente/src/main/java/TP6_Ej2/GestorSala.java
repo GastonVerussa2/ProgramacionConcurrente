@@ -22,23 +22,27 @@ public class GestorSala {                   //Recurso compartido, monitor.
         tUmbral = umbralTemperatura;
     }
     
-    public synchronized void entrarSala(){      //Se invoca cuando una persona quiere entrar en la sala.
+    public synchronized void entrarSala(String nombre){      //Se invoca cuando una persona quiere entrar en la sala.
         try{
             while((cantidadPersonas >= capacidad)||(jubiladosEsperando > 0)){   //Si no hay espacio o hay jubilados esperando.
+                System.out.println("--" + nombre + ": Debo esperar.");
                 this.wait();                                                    //Espera a que le avisen cuando puede que sea diferente.
             }
             cantidadPersonas++;                                                 //Entra a la sala, por lo que hay una persona más.
+            System.out.println("----" + nombre + ": Logré entrar a la sala.  (cantidad actual: " + cantidadPersonas + ", capacidad: " + capacidad + ").");
         } catch(InterruptedException E){
         }
     }
     
-    public synchronized void entrarSalaJubilado(){  //Se invoca cuando una persona jubilada quiere entrar en la sala.
+    public synchronized void entrarSalaJubilado(String nombre){  //Se invoca cuando una persona jubilada quiere entrar en la sala.
         try{
             jubiladosEsperando++;                   //Agrega un jubilado esperando.
             while(cantidadPersonas >= capacidad){   //Si no hay espacio.
+                System.out.println("--" + nombre + ": Debo esperar.");
                 this.wait();                        //Espera a que le avisen cuando puede que haya espacio.
             }
             cantidadPersonas++;                     //Entra a la sala, por lo que hay una persona más.
+            System.out.println("----" + nombre + ": Logré entrar a la sala.  (cantidad actual: " + cantidadPersonas + ", capacidad: " + capacidad + ").");
             jubiladosEsperando--;                   //Pudo entrar, por lo que ya no está esperando.
         } catch(InterruptedException E){
         }

@@ -46,11 +46,10 @@ public class Persona extends Thread{    //Hilo para simular a las personas que v
         this.caminarAlMuseo();
         System.out.println(nombre + ": Llegué al museo.");      //Carteles para hacer seguimiento.
         if(jubilado){                                           //If para diferenciar que metodo de entrada debe usar.
-            SalaMuseo.entrarSalaJubilado();                     //Luego usa su respectivo método para entrar.
+            SalaMuseo.entrarSalaJubilado(nombre);                     //Luego usa su respectivo método para entrar.
         } else {
-            SalaMuseo.entrarSala();
+            SalaMuseo.entrarSala(nombre);
         }
-        System.out.println("--" + nombre + ": Logré entrar a la sala.");
         this.pasearSala();
         SalaMuseo.salirSala();                                 //Sale de la sala.
         System.out.println("----" + nombre + ": Salí de la sala.");
