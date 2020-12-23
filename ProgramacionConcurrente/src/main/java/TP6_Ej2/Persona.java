@@ -28,7 +28,7 @@ public class Persona extends Thread{    //Hilo para simular a las personas que v
     
     private void caminarAlMuseo(){              //Método para simular que camina al museo y separar la llegada de cada persona.
         try{
-            Thread.sleep((int) (Math.random() * 30000));
+            Thread.sleep((int) (Math.random() * 40000));
         } catch(InterruptedException E){
             
         }
@@ -36,7 +36,7 @@ public class Persona extends Thread{    //Hilo para simular a las personas que v
     
     private void pasearSala(){              //Método para simular que pasea dentro de la sala.
         try{
-            Thread.sleep(5000 + (int) (Math.random() * 7500));
+            Thread.sleep(10000 + (int) (Math.random() * 5000));
         } catch(InterruptedException E){
             
         }
@@ -52,6 +52,6 @@ public class Persona extends Thread{    //Hilo para simular a las personas que v
         }
         this.pasearSala();
         SalaMuseo.salirSala();                                 //Sale de la sala.
-        System.out.println("----" + nombre + ": Salí de la sala.");
+        System.out.println("------" + nombre + ": Salí de la sala.");
     }
 }

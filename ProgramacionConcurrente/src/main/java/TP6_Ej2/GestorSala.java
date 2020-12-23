@@ -24,26 +24,30 @@ public class GestorSala {                   //Recurso compartido, monitor.
     
     public synchronized void entrarSala(String nombre){      //Se invoca cuando una persona quiere entrar en la sala.
         try{
-            while((cantidadPersonas >= capacidad)||(jubiladosEsperando > 0)){   //Si no hay espacio o hay jubilados esperando.
+            if((cantidadPersonas >= capacidad)||(jubiladosEsperando > 0)){   //Si no hay espacio o hay jubilados esperando.
                 System.out.println("--" + nombre + ": Debo esperar.");
-                this.wait();                                                    //Espera a que le avisen cuando puede que sea diferente.
+                do{
+                    this.wait();                                            //Espera a que le avisen cuando puede que sea diferente.
+                } while((cantidadPersonas >= capacidad)||(jubiladosEsperando > 0));
             }
             cantidadPersonas++;                                                 //Entra a la sala, por lo que hay una persona más.
-            System.out.println("----" + nombre + ": Logré entrar a la sala.  (cantidad actual: " + cantidadPersonas + ", capacidad: " + capacidad + ").");
+            System.out.println("----" + nombre + ": Logré entrar a la sala.  (cantidad actual: " + cantidadPersonas + ").");
         } catch(InterruptedException E){
         }
     }
     
     public synchronized void entrarSalaJubilado(String nombre){  //Se invoca cuando una persona jubilada quiere entrar en la sala.
         try{
-            jubiladosEsperando++;                   //Agrega un jubilado esperando.
-            while(cantidadPersonas >= capacidad){   //Si no hay espacio.
+            if(cantidadPersonas >= capacidad){   //Si no hay espacio.
                 System.out.println("--" + nombre + ": Debo esperar.");
-                this.wait();                        //Espera a que le avisen cuando puede que haya espacio.
+                jubiladosEsperando++;                   //Agrega un jubilado esperando.
+                do{
+                    this.wait();                        //Espera a que le avisen cuando puede que haya espacio.
+                } while(cantidadPersonas >= capacidad);
+                jubiladosEsperando--;                   //Ya no está esperando.
             }
             cantidadPersonas++;                     //Entra a la sala, por lo que hay una persona más.
-            System.out.println("----" + nombre + ": Logré entrar a la sala.  (cantidad actual: " + cantidadPersonas + ", capacidad: " + capacidad + ").");
-            jubiladosEsperando--;                   //Pudo entrar, por lo que ya no está esperando.
+            System.out.println("----" + nombre + ": Logré entrar a la sala.  (cantidad actual: " + cantidadPersonas + ").");
         } catch(InterruptedException E){
         }
     }
@@ -54,11 +58,13 @@ public class GestorSala {                   //Recurso compartido, monitor.
     }
     
     public synchronized void notificarTemperatura(int temperatura){ //Lo invoca la hebra que mide la temperatura de la sala para indicar el último valor medido.
-        System.out.println("Termometro: La temperatura actual es de: " + temperatura);
         if(temperatura > tUmbral){              //Si se supera el umbral
             capacidad = capacidadReducida;      // se ajusta la capacidad a la reducida.
         } else {                                //Si no
             capacidad = capacidadInicial;       // se ajusta la capacidad a la inicial.
         }
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("La temperatura actual es de: " + temperatura + ". La capacidad fue ajustada a " + capacidad + ".");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 }

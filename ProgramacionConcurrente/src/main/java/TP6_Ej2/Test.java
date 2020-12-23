@@ -17,7 +17,7 @@ public class Test {
         
         GestorSala SalaMuseo = new GestorSala(30);
         Termometro TermometroSala = new Termometro(SalaMuseo, 4000);
-        int cantPersonas = 70;
+        int cantPersonas = 150;
         Persona Personas[] = new Persona[cantPersonas];
         
         Random rb = new Random();
