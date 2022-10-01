@@ -16,7 +16,7 @@ public class Confiteria {
     
     private final Semaphore semMozo = new Semaphore(0);     
     private final Semaphore[] semCocinero;
-    private final Semaphore[] semCocineroLibre;
+    private final Semaphore[] semCocineroLibre;     //Cambiar a arreglo de boolean, mas eficiente
     private final int cantidadCocineros;
     private final Semaphore[] semEmpleado;
     private final Semaphore mutexConfiteria;
@@ -58,7 +58,7 @@ public class Confiteria {
                 cocinero = i;
                 semCocinero[cocinero].release();
                 System.out.println(Thread.currentThread().getName() + ": Me atendió el cocinero número " + cocinero);
-                break;
+                break;      //NO usar break, usar variable de control boolean.
             }
         }
         return cocinero;

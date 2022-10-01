@@ -26,7 +26,7 @@ public class Hilo extends Thread{
         while(true){
             recurso.imprimir(semEntrada, semSalida);
             try{
-                Thread.sleep((int) Math.random() * 10);
+                Thread.sleep((int) Math.random() * 10);         //Innecesario, borrar
             } catch(InterruptedException E){
                 System.out.println("ups");
             }
